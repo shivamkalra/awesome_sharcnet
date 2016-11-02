@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+# Taken from https://gist.github.com/jaberg/6251456/, updated for 2016.
+#
+# USAGE
+# -----
+#
+# Run this script in the folder (not $HOME, try ~/python) where you want to put
+# the Python libraries.
+#
+# To access the installed Python environment, start a fresh shell and source the
+# fake_venv.sh file (e.g., ". ~/python/fake_venv.sh").
+#
+# If other Python packages that require compilation are used in this
+# environment, they might need to be recompiled with GCC.
+
+# Configure bash
+set -x # Verbose
+set -e # Exit on error
+
+module unload python gcc intel openmpi mkl
+module load gcc
+
+
+# Install Python
+PYTHON_NAME=Python-2.7.8
+PREFIX="${HOME}/.python2.7.8"
+
+echo "Install in ${PREFIX}"
+rm -rf ${PREFIX}
+mkdir -p ${PREFIX}
+
+wget "http://python.org/ftp/python/2.7.8/${PYTHON_NAME}.tgz"
+tar zxvf ${PYTHON_NAME}.tgz
+
+(cd ${PYTHON_NAME} \
+&& ./configure --prefix=${PREFIX} --enable-shared \
+&& make \
+&& make install)
+
+# Install Pip
+wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -O - | python
+wget https://bootstrap.pypa.io/get-pip.py
+${PREFIX}/bin/python get-pip.py
+
+# # Install some common packages
+# for pkg in cython ipython numpy scipy matplotlib h5py; do
+#     pip install ${pkg}
+# done

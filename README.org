@@ -1,0 +1,46 @@
+* Sharcnet
+
+** Bootstrap python2.7 environment on Sharcnet
+
+Following will build python2.7 using gcc compiler.
+
+- Download [[scripts/install_python2.7.8][python bootstrap script]] in your home directory and execute it.
+
+#+BEGIN_SRC shell
+  cd ~
+  wget https://raw.githubusercontent.com/shivamkalra/awesome_sharcnet/master/scripts/install_python2.7.8
+  chmod +x ~/install_python2.7.8
+  ~/install_python2.7.8
+#+END_SRC
+
+- It will install python2.7.8 and pip in *~/.python2.7.8*.
+
+- Make sure, you do not load any python modules in your .bashrc. Add following
+  to your .bashrc.
+
+#+BEGIN_SRC shell
+  module unload gcc python intel openmpi
+  module load gcc
+
+  export PYPATH="$HOME/.python2.7.8"
+  export PATH=${PYPATH}/bin:${PATH}
+  export LD_LIBRARY_PATH=${PYPATH}/lib:${LD_LIBRARY_PATH}
+  export -n LDFLAGS
+#+END_SRC
+
+- Re login or source .bashrc and you will have locally build python environment
+  activated.
+
+- Use ~pip~ to install ~virtualenv~ and install your favorite packages in
+  virtual environment. You can source this virtual environment from your job
+  submission script.
+
+#+BEGIN_SRC shell
+  pip install virtualenv
+
+  # create virtual environment (it just creates a folder in directory of execution)
+  virtualenv irma-playground
+
+  # activate your virtual environment
+  source irma-playground/bin/activate
+#+END_SRC
