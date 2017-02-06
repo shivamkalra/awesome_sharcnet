@@ -39,7 +39,8 @@ tar zxvf ${PYTHON_NAME}.tgz
 && make install)
 
 # Install Pip
-wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -O - | python
+# This is not required last installed (Feb 06, 2017)
+# wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -O - | python
 wget https://bootstrap.pypa.io/get-pip.py
 ${PREFIX}/bin/python get-pip.py
 
